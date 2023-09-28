@@ -1,10 +1,15 @@
 import os  # 创建文件夹, 文件是否存在
-import time  # time 计时
 import pickle  # 保存和读取cookie实现免登陆的一个工具
+import time  # time 计时
 from time import sleep
+
 from selenium import webdriver  # 操作浏览器的工具
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
+chrome_options = Options()
+service = Service("chromedriver.exe")
 """
 一. 实现免登陆
 二. 抢票并且下单
@@ -16,13 +21,14 @@ login_url = 'https://passport.damai.cn/login?ru=https%3A%2F%2Fwww.damai.cn%2F'
 # 抢票目标页
 target_url = 'https://detail.damai.cn/item.htm?spm=a2oeg.search_category.0.0.57344206oDviCO&id=715121254118&clicktitle=%E8%96%9B%E4%B9%8B%E8%B0%A6%E2%80%9C%E5%A4%A9%E5%A4%96%E6%9D%A5%E7%89%A9%E2%80%9D%E5%B7%A1%E5%9B%9E%E6%BC%94%E5%94%B1%E4%BC%9A%E2%80%94%E8%A5%BF%E5%AE%89%E7%AB%99'
 
+
 # class Concert:
 class Concert:
     # 初始化加载
     def __init__(self):
         self.status = 0  # 状态, 表示当前操作执行到了哪个步骤
         self.login_method = 1  # {0:模拟登录, 1:cookie登录}自行选择登录的方式
-        self.driver = webdriver.Chrome(executable_path="C:/Program Files/Google/Chrome/Application/chromedriver.exe")  # 当前浏览器驱动对象
+        self.driver = webdriver.Chrome(service=service, options=chrome_options)  # 当前浏览器驱动对象
 
     # cookies: 登录网站时出现的 记录用户信息用的
     def set_cookies(self):
